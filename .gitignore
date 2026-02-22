@@ -1,0 +1,26 @@
+# .gitignore
+
+# -----------------
+# Pengecualian Backend (Python)
+# -----------------
+backend/venv/
+backend/__pycache__/
+backend/.pytest_cache/
+backend/*.pyc
+backend/.env
+
+# -----------------
+# Pengecualian Frontend (Node/Next.js)
+# -----------------
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
+frontend/out/
+frontend/build/
+
+# -----------------
+# Pengecualian OS & Editor
+# -----------------
+.DS_Store
+.vscode/
+Thumbs.db

@@ -1,0 +1,1 @@
+# Setup environment variables (CORS, Secret Keys)
