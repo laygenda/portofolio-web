@@ -1,26 +1,56 @@
-# .gitignore
+# ==========================================
+# FULL-STACK PORTFOLIO .GITIGNORE
+# ==========================================
 
-# -----------------
-# Pengecualian Backend (Python)
-# -----------------
-backend/venv/
-backend/__pycache__/
-backend/.pytest_cache/
-backend/*.pyc
-backend/.env
+# ------------------------------------------
+# 1. ENVIRONMENT VARIABLES (SANGAT RAHASIA!)
+# ------------------------------------------
+# Jangan pernah mem-push file yang berisi password database atau API Key
+.env
+.env.*
+!.env.example
 
-# -----------------
-# Pengecualian Frontend (Node/Next.js)
-# -----------------
-frontend/node_modules/
-frontend/.next/
-frontend/.env.local
-frontend/out/
-frontend/build/
+# ------------------------------------------
+# 2. BACKEND (Python / FastAPI)
+# ------------------------------------------
+# Virtual Environments (Ukurannya sangat besar, tidak boleh di-push)
+venv/
+env/
+.venv/
 
-# -----------------
-# Pengecualian OS & Editor
-# -----------------
-.DS_Store
+# Python Cache (File sampah hasil compile Python)
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Database Lokal (Berjaga-jaga jika ada file SQLite nyasar)
+*.sqlite3
+*.db
+
+# ------------------------------------------
+# 3. FRONTEND (Node.js / Next.js)
+# ------------------------------------------
+# Dependencies Node (Ukurannya bisa bergiga-giga)
+node_modules/
+/frontend/node_modules/
+
+# Next.js Build Output (File hasil generate otomatis oleh Next.js)
+.next/
+/frontend/.next/
+out/
+build/
+/frontend/out/
+/frontend/build/
+
+# Log Error
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ------------------------------------------
+# 4. OS & TEXT EDITOR (VS Code / Windows)
+# ------------------------------------------
 .vscode/
+.DS_Store
 Thumbs.db
