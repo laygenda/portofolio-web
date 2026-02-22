@@ -1,9 +1,8 @@
 # backend/app/api/projects.py
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import date, timedelta  # Tambahan baru
-
 from app.core.database import get_db
 from app.models import project as project_model
 from app.schemas import project as project_schema
@@ -56,3 +55,19 @@ def get_activity_chart(db: Session = Depends(get_db)):
         })
         
     return result
+
+# 4. ENDPOINT BARU: Menghapus Project (DELETE)
+@router.delete("/{project_id}")
+def delete_project(project_id: int, db: Session = Depends(get_db)):
+    # Cari project di database berdasarkan ID
+    project = db.query(project_model.Project).filter(project_model.Project.id == project_id).first()
+    
+    # Jika datanya tidak ditemukan
+    if not project:
+        raise HTTPException(status_code=404, detail="Project tidak ditemukan")
+        
+    # Jika ditemukan, hapus secara permanen
+    db.delete(project)
+    db.commit()
+    
+    return {"message": f"Project dengan ID {project_id} berhasil dihapus"}
