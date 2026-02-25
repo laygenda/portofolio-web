@@ -26,3 +26,14 @@ class UserResponse(UserBase):
     # Konfigurasi agar Pydantic bisa membaca model SQLAlchemy
     class Config:
         from_attributes = True
+
+# menambahkan profileupdate (PUT)
+class ProfileUpdate(BaseModel):
+    nama: Optional[str] = None
+    role: Optional[str] = None
+    lokasi: Optional[str] = None
+    deskripsi_singkat: Optional[str] = None
+    deskripsi_detail: Optional[str] = None
+    foto_url: Optional[str] = None
+    github_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
