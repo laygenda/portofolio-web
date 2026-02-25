@@ -21,3 +21,12 @@ class ProjectResponse(ProjectBase):
 
     class Config:
         from_attributes = True 
+        
+# menambahkan class update, sehingga menjadi CRUD
+class ProjectUpdate(BaseModel):
+    judul: Optional[str] = None
+    deskripsi: Optional[str] = None
+    tech_stack: Optional[str] = None
+    gambar_url: Optional[str] = None
+    repo_url: Optional[str] = None
+    tanggal_pengerjaan: Optional[date] = None

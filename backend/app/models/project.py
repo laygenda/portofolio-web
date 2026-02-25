@@ -1,6 +1,7 @@
 # backend/app/models/project.py
-from sqlalchemy import Column, Integer, String, Text, Date
+from sqlalchemy import Column, Integer, String, Text, Date, DateTime
 from app.core.database import Base
+from sqlalchemy.sql import func
 
 class Project(Base):
     __tablename__ = "projects"
@@ -12,3 +13,6 @@ class Project(Base):
     gambar_url = Column(String(255))
     repo_url = Column(String(255))
     tanggal_pengerjaan = Column(Date)
+    
+    # fitur baru dengan mencatat waktu otomatis saat data ditambahkan
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

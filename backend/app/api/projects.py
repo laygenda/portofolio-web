@@ -26,14 +26,14 @@ def create_project(project_data: project_schema.ProjectCreate, db: Session = Dep
 # 3. ENDPOINT BARU: Data untuk Activity Chart (Grafik ala GitHub)
 @router.get("/activity")
 def get_activity_chart(db: Session = Depends(get_db)):
-    # Ambil semua tanggal project dari database
-    projects = db.query(project_model.Project.tanggal_pengerjaan).all()
+    # Ambil waktu pembuatan (created_at) dari database, BUKAN tanggal pengerjaan
+    projects = db.query(project_model.Project.created_at).all()
     
-    # Hitung frekuensi project per tanggal
+    # Hitung frekuensi project berdasarkan tanggal pembuatannya
     activity_map = {}
     for p in projects:
-        if p.tanggal_pengerjaan:
-            d_str = p.tanggal_pengerjaan.strftime("%Y-%m-%d")
+        if p.created_at: # Menggunakan created_at
+            d_str = p.created_at.strftime("%Y-%m-%d")
             activity_map[d_str] = activity_map.get(d_str, 0) + 1
     
     # Generate data 365 hari ke belakang agar grafik selalu penuh
@@ -71,3 +71,24 @@ def delete_project(project_id: int, db: Session = Depends(get_db)):
     db.commit()
     
     return {"message": f"Project dengan ID {project_id} berhasil dihapus"}
+
+# 5. ENDPOINT BARU: Mengupdate Project (PUT)
+@router.put("/{project_id}", response_model=project_schema.ProjectResponse)
+def update_project(project_id: int, project_data: project_schema.ProjectUpdate, db: Session = Depends(get_db)):
+    # Cari project berdasarkan ID
+    project = db.query(project_model.Project).filter(project_model.Project.id == project_id).first()
+    
+    if not project:
+        raise HTTPException(status_code=404, detail="Project tidak ditemukan")
+        
+    # Ambil data yang dikirim dari Swagger (hanya yang tidak kosong/diubah)
+    update_data = project_data.model_dump(exclude_unset=True)
+    
+    # Timpa data lama dengan data baru
+    for key, value in update_data.items():
+        setattr(project, key, value)
+        
+    db.commit()
+    db.refresh(project)
+    
+    return project
